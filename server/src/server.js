@@ -1,3 +1,5 @@
+import Player from './game/Player.js'
+import Table from './game/Table.js'
 const express = require("express");
 const { createServer } = require("node:http");
 const { Server } = require("socket.io");
@@ -40,13 +42,7 @@ io.on("connection", (socket) => {
   socket.on("joinTable", ({ tableId, playerName }) => {
 
     if (!tables[tableId]) {
-      tables[tableId] = {
-        tableId,
-        players: [],
-        pot: 0,
-        communityCards: [],
-        phase: "waiting",
-      };
+        tables[tableId] = new Table(tableId);
     }
 
   
@@ -55,12 +51,9 @@ io.on("connection", (socket) => {
     
     if(table.players.length < 9){
 
-      table.players.push({
-        id: socket.id,
-        name: playerName,
-        chips: 1000,
-        folded: false,
-      });
+      table.players.addPlayer(
+        new Player(socket.id, playerName, 1000)
+      );
 
       socket.join(tableId);
 
