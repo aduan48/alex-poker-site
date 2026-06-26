@@ -42,6 +42,7 @@ export default class Card{
         return this.suit;
     }
 
+
     /**
      * 
      * @returns the string repersentation of the card

@@ -43,6 +43,15 @@ export default class Deck{
     }
 
     /**
+     * @returns the first card and the pushes it to the end
+     */
+    deal(){
+        dealtCard = this.deck.shift();
+        this.deck.push(dealtCard)
+        return dealtCard
+    }
+
+    /**
      * 
      * @returns a too string method with the length and every card
      */

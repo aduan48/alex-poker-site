@@ -20,6 +20,14 @@ export default class Player{
     }
 
     /**
+     * 
+     * @returns the socket id of the client user
+     */
+    getId(){
+        return this.id;
+    }
+
+    /**
      * adds a card to their hand
      * @param card 
      */
@@ -28,11 +36,36 @@ export default class Player{
     }
 
     /**
+     * 
+     * @returns wether or not the player folded
+     */
+    getFolded(){
+        return this.folded;
+    }
+
+    /**
      * resets them by making them not folded yet and changing the array of their hand to empty
      */
     reset(){
         this.folded = false;
         this.hand.length = 0;
+    }
+
+    fold(){
+        this.folded = true;
+    }
+
+    bet(amount){
+        if(amount > this.chips){
+            return -1;
+        } else{
+            this.chips = this.chips-amount;
+            return amount;
+        }
+    }
+
+    call(amountToCall){
+
     }
 
     /**

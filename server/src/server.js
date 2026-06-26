@@ -41,6 +41,8 @@ io.on("connection", (socket) => {
 
   socket.on("joinTable", ({ tableId, playerName }) => {
 
+    socket.currentTableId = tableId;
+
     if (!tables[tableId]) {
         tables[tableId] = new Table(tableId);
     }
@@ -89,16 +91,18 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("A user disconnected:", socket.id);
 
-    for (const tableId in tables) {
+    const tableId = socket.currentTableId;
+
+    if (tableId && tables[tableId]) {
       const table = tables[tableId];
+      const isTableEmpty = table.removePlayer(socket.id);
 
-      table.players = table.players.filter((player) => player.id !== socket.id);
-
-      io.to(tableId).emit("tableState", table);
-
-      if (table.players.length === 0) {
+      if (isTableEmpty) {
         delete tables[tableId];
         console.log(`Deleted empty table ${tableId}`);
+      } else {
+        // Only broadcast if the table still exists and players are left
+        io.to(tableId).emit("tableState", table);
       }
     }
   });

@@ -26,7 +26,7 @@ let bob = new Player(2,"Bob", 1000);
 table.addPlayer(alex);
 table.addPlayer(bob);
 
-table.deal();
+table.startHand();
 
 console.log(alex.toString())
 console.log(bob.toString())
